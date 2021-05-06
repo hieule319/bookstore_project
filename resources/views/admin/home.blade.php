@@ -20,6 +20,10 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('public/admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
+    <!-- Custom styles for this page -->
+    <link href="{{ asset('public/admin/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <!-- Loading page -->
+    <!-- <link href="{{ asset('public/admin/css/loading.css') }}" rel="stylesheet" type="text/css"> -->
 </head>
 
 <body id="page-top">
@@ -31,11 +35,11 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="home">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                <div class="sidebar-brand-text mx-3">{{ session('UserName') }}</div>
             </a>
 
             <!-- Divider -->
@@ -43,7 +47,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="home">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -61,12 +65,12 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Thể loại</span>
+                    <span>Sản Phẩm - Danh Mục</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="add-category">Thêm thể loại</a>
-                        <a class="collapse-item" href="list-category">Danh sách thể loại</a>
+                        <a class="collapse-item" href="{{ route('category.index') }}">Danh mục sản phẩm</a>
+                        <a class="collapse-item" href="list-category">Sản phẩm</a>
                     </div>
                 </div>
             </li>
@@ -322,7 +326,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $LoggedUserInfo->name }}</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ session('UserName') }}</span>
                                 <img class="img-profile rounded-circle"
                                     src="{{ asset('public/admin/img/undraw_profile.svg') }}">
                             </a>
@@ -354,7 +358,7 @@
                 </nav>
                 <!-- End of Topbar -->
 
-                @yield('home')
+                @yield('content')
 
             </div>
             <!-- End of Main Content -->
@@ -417,6 +421,19 @@
     <script src="{{ asset('public/admin/js/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('public/admin/js/demo/chart-pie-demo.js') }}"></script>
 
+    <!-- Page level plugins -->
+    <script src="{{ asset('public/admin/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('public/admin/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{{ asset('public/admin/js/demo/datatables-demo.js') }}"></script>
+
+    <!-- <script>
+        window.addEventListener("load", function(){
+            const loader = document.querySelector(".loader");
+            loader.className += " hidden";
+        });
+    </script> -->
 </body>
 
 </html>

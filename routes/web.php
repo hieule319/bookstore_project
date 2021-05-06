@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserAuthController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +29,10 @@ Route::post('check',[UserAuthController::class, 'check'])->name('auth.check');
 Route::middleware(['isLogged'])->group(function () {
     Route::get('home',[UserAuthController::class, 'home']);
     Route::get('logout',[UserAuthController::class, 'logout']);
+    
+    //category
+    Route::resource('category',CategoryController::class);
+    Route::get('category-show/{id}',[CategoryController::class, 'getCategoryById']);
+    Route::post('category-update',[CategoryController::class, 'updateCategory'])->name('category.update');
+    Route::get('category-delete/{id}',[CategoryController::class, 'deleteCategory']);
 });

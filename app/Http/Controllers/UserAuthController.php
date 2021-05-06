@@ -66,16 +66,14 @@ class UserAuthController extends Controller
         if (session()->has('LoggedUser')) {
             $data['id'] = session('LoggedUser');
             $user = User::checkLogin($data);
-            $data = [
-                'LoggedUserInfo' => $user
-            ];
+            session(['UserName' => $user['name']]);
         }
         if ($user['permission'] == 0 || $user['permission'] == 1) {
-            return view('admin.home', $data);
+            return view('admin.home');
         }
 
         if ($user['permission'] == 2) {
-            return view('user.profile', $data);
+            return view('user.profile');
         }
     }
 
@@ -84,6 +82,7 @@ class UserAuthController extends Controller
         if(session()->has('LoggedUser'))
         {
             session()->pull('LoggedUser');
+            session()->pull('UserName');
             return redirect('login');
         }
     }
