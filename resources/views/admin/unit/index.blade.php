@@ -3,8 +3,8 @@
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Thể loại </h6>
-        <a href="#" class="btn btn-success" style="float: right;" data-toggle="modal" data-target="#categoryModal">Thêm danh mục</a>
+        <h6 class="m-0 font-weight-bold text-primary">Đơn vị tính</h6>
+        <a href="#" class="btn btn-success" style="float: right;" data-toggle="modal" data-target="#categoryModal">Thêm mới</a>
     </div>
     <div class="result">
         @if(Session::get('success'))
@@ -27,11 +27,11 @@
                 <thead>
                     <tr>
                         <th>STT</th>
-                        <th>Tên Danh Mục</th>
+                        <th>Tên ĐVT</th>
                         <th>Trạng thái</th>
                         <th>Ngày tạo</th>
                         <th>Ngày Cập nhật</th>
-                        <th>Thao tác</th>
+                        <th>Salary</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -41,38 +41,23 @@
                         <th>Trạng thái</th>
                         <th>Ngày tạo</th>
                         <th>Ngày Cập nhật</th>
-                        <th>Thao tác</th>
+                        <th>Salary</th>
                     </tr>
                 </tfoot>
                 <tbody>
                     <?php $stt = 1 ?>
-                    @foreach($categories as $key => $category)
-                    <tr id="sid{{$category->id}}">
+                    @foreach($units as $key => $unit)
+                    <tr>
                         <td>{{ $stt }}</td>
-                        <td>{{ $category->category_name }}</td>
+                        <td>{{ $unit->category_name }}</td>
+                        <td>{{ $unit->status }}</td>
+                        <td>{{ $unit->created_at }}</td>
+                        <td>{{ $unit->updated_at }}</td>
                         <td>
-                            <?php 
-                                 if($category->status == 0)
-                                 {
-                                    $status = 1;
-                            ?>
-                                   <a href="{{URL::to('category-status/'.$category->id.'/'.$status)}}"><i class="fas fa-thumbs-up" style="font-size:20px; color:darkgreen"></i></a>
-                            <?php
-                                 }else{
-                                    $status = 0;
-
-                            ?>
-                                    <a href="{{URL::to('category-status/'.$category->id.'/'.$status)}}"><i class="fas fa-thumbs-down" style="font-size:20px; color:red"></i></a>
-                            <?php } ?>
-                        
-                        </td>
-                        <td>{{ $category->created_at }}</td>
-                        <td>{{ $category->updated_at }}</td>
-                        <td>
-                            <a href="javascript:void(0)" class="btn btn-info btn-circle" onclick="editCategory({{$category->id}})" data-toggle="modal" data-target="#categoryEditModal">
+                            <a href="javascript:void(0)" class="btn btn-info btn-circle" onclick="editCategory({{$unit->id}})" data-toggle="modal" data-target="#categoryEditModal">
                                 <i class="fas fa-info-circle"></i>
                             </a>
-                            <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')" href="{{URL::to('category-delete/'.$category->id)}}" class="btn btn-danger btn-circle">
+                            <a href="#" class="btn btn-danger btn-circle">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </td>
@@ -150,36 +135,4 @@
         });
     }
 </script>
-<!-- <script>
-    $(document).ready(function(){
-        $('#categorybtnEdit').on('click', function(){
-            $('#categoryEditModal').modal('show');
-        });
-    });
-</script> -->
-
-<!-- <script>
-    $("#categoryForm").submit(function(e) {
-        e.preventDefault();
-
-        let category_name = $("#category_name").val();
-        let _token = $("input[name=_token]").val();
-
-        $.ajax({
-            url: "{{ route('category.store') }}",
-            type: "POST",
-            data: {
-                category_name: category_name,
-                _token: _token
-            },
-            success: function(response) {
-                if (response) {
-                    $("#dataTable tbody").append('<tr><td>' + 1 + '</td><td>' + response.category_name + '</td><td>' + response.status + '</td><td>' + response.created_at + '</td><td>' + response.updated_at + '</td><td>'+ <a href="#" class="btn btn-info btn-circle"><i class="fas fa-info-circle"></i></a>+'</td></tr>');
-                    $("#categoryForm")[0].reset();
-                    $('#categoryModal').modal('hide');
-                }
-            }
-        });
-    });
-</script> -->
 @endsection

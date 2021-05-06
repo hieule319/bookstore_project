@@ -125,4 +125,14 @@ class CategoryController extends Controller
             }
         }
     }
+
+    public function updateStatusCategory($id,$status)
+    {
+        $param['status'] = $status;
+        $query = category::insertOrUpdateCategory($param,$id);
+
+        if ($query == 'success') {
+            return back();
+        } 
+    }
 }

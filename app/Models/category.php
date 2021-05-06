@@ -21,10 +21,13 @@ class category extends Model
 
     public static function insertOrUpdateCategory($data,$id = null)
     {
-        $check = self::checkNameCategory($data['category_name']);
-        if(!is_null($check))
+        if(isset($data['category_name']))
         {
-            return 'existscategory';
+            $check = self::checkNameCategory($data['category_name']);
+            if(!is_null($check))
+            {
+                return 'existscategory';
+            }
         }
 
         if(is_null($id))

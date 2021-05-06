@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UnitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,4 +36,11 @@ Route::middleware(['isLogged'])->group(function () {
     Route::get('category-show/{id}',[CategoryController::class, 'getCategoryById']);
     Route::post('category-update',[CategoryController::class, 'updateCategory'])->name('category.update');
     Route::get('category-delete/{id}',[CategoryController::class, 'deleteCategory']);
+    Route::get('category-status/{id}/{status}',[CategoryController::class, 'updateStatusCategory']);
+
+    //Unit
+    Route::resource('unit',UnitController::class);
+
+    //Category Detail
+    
 });
