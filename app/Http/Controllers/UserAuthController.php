@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Laravel\Socialite\Facades\Socialite;
 
 class UserAuthController extends Controller
 {
@@ -85,5 +86,45 @@ class UserAuthController extends Controller
             session()->pull('UserName');
             return redirect('login');
         }
+    }
+
+    public function redirectToProvider()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleProviderCallback()
+    {
+        try{
+            $user = Socialite::driver('google')->user();
+        } catch (\Exception $e) {
+            return redirect('login');
+        }
+
+        if(explode("@", $user->email)[1] !== 'gmail.com')
+        {
+            return redirect()->to('/');
+        }
+ 
+        $data['email'] = $user->email;
+        $existingUser = User::checkLogin($data);
+
+        if($existingUser)
+        {
+            session()->put('LoggedUser', $user['id']);
+            return redirect('home');
+        }else
+        {
+            $params = [
+                'name' => $user->username,
+                'email' => $user->email,
+                'permission' => 2,
+                'google_id' => $user->id,
+                'avatar' => $user->avatar,
+                'avatar_original' => $user->avatar_original
+            ];
+            $query = User::insertOrUpdateUser($params);
+        }
+        return redirect()->to('/');
     }
 }

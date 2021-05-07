@@ -22,7 +22,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'permission'
+        'permission',
+        'google_id',
+        'avatar',
+        'avatar_original'
     ];
 
     /**
@@ -51,6 +54,14 @@ class User extends Authenticatable
     
     public static function checkLogin($data)
     {
+        if(isset($data['email']))
+        {
+            return  self::where([
+                'email' => $data['email'],
+                'invalid' => 0
+            ])->first();
+        }
+        
         if(isset($data['id']))
         {
             return  self::where([

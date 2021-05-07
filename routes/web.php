@@ -44,3 +44,7 @@ Route::middleware(['isLogged'])->group(function () {
     //Category Detail
     
 });
+
+//Login Google
+Route::get('/redirect',[UserAuthController::class, 'redirectToProvider']);
+Route::get('/callback',[UserAuthController::class, 'handleProviderCallback']);
