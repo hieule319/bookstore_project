@@ -61,7 +61,7 @@ class User extends Authenticatable
                 'invalid' => 0
             ])->first();
         }
-        
+
         if(isset($data['id']))
         {
             return  self::where([

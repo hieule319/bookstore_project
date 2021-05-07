@@ -21,8 +21,15 @@ Route::get('/', function () {
 });
 
 //User
-Route::get('login',[UserAuthController::class, 'login'])->middleware('AlreadyLoggedIn');
-Route::get('register',[UserAuthController::class, 'register'])->middleware('AlreadyLoggedIn');
+Route::middleware(['AlreadyLoggedIn'])->group(function () {
+    Route::get('login',[UserAuthController::class, 'login']);
+    Route::get('register',[UserAuthController::class, 'register']);
+
+    //Login Google
+    Route::get('redirect',[UserAuthController::class, 'redirectToProvider']);
+    Route::get('/callback',[UserAuthController::class, 'handleProviderCallback']);
+});
+
 Route::post('create',[UserAuthController::class, 'create'])->name('auth.create');
 Route::post('check',[UserAuthController::class, 'check'])->name('auth.check');
 
@@ -30,6 +37,7 @@ Route::post('check',[UserAuthController::class, 'check'])->name('auth.check');
 Route::middleware(['isLogged'])->group(function () {
     Route::get('home',[UserAuthController::class, 'home']);
     Route::get('logout',[UserAuthController::class, 'logout']);
+    
     
     //category
     Route::resource('category',CategoryController::class);
@@ -45,6 +53,4 @@ Route::middleware(['isLogged'])->group(function () {
     
 });
 
-//Login Google
-Route::get('/redirect',[UserAuthController::class, 'redirectToProvider']);
-Route::get('/callback',[UserAuthController::class, 'handleProviderCallback']);
+
