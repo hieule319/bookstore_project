@@ -36,7 +36,7 @@ class UserAuthController extends Controller
 
         if ($query) {
             return back()->with('success', 'You have been successfuly registered');
-        }else {
+        } else {
             return back()->with('fail', 'Something went wrong');
         }
     }
@@ -67,15 +67,14 @@ class UserAuthController extends Controller
         if (session()->has('LoggedUser')) {
             $data['id'] = session('LoggedUser');
             $user = User::checkLogin($data);
+            session(['UserName' => $user['name']]);
         }
         if ($user['permission'] == 0 || $user['permission'] == 1) {
-            session(['UserName' => $user['name']]);
             return view('admin.home');
         }
 
         if ($user['permission'] == 2) {
-            session(['UserName' => $user['name']]);
-            return redirect()->to('/');
+            return view('user.profile');
         }
     }
 
@@ -83,12 +82,11 @@ class UserAuthController extends Controller
     {
         if(session()->has('LoggedUser'))
         {
-            session()->flush();
+            session()->pull('LoggedUser');
+            session()->pull('UserName');
             return redirect('login');
         }
     }
-
-
 
     public function redirectToProvider()
     {
@@ -102,7 +100,7 @@ class UserAuthController extends Controller
         } catch (\Exception $e) {
             return redirect('login');
         }
-        
+
         if(explode("@", $user->email)[1] !== 'gmail.com')
         {
             return redirect()->to('/');
@@ -110,17 +108,16 @@ class UserAuthController extends Controller
  
         $data['email'] = $user->email;
         $existingUser = User::checkLogin($data);
-        
+
         if($existingUser)
         {
-            session()->put('LoggedUser', $existingUser['id']);
+            session()->put('LoggedUser', $user['id']);
             return redirect('home');
         }else
         {
             $params = [
-                'name' => $user->name,
+                'name' => $user->username,
                 'email' => $user->email,
-                'password' => null,
                 'permission' => 2,
                 'google_id' => $user->id,
                 'avatar' => $user->avatar,
